@@ -19,9 +19,10 @@ export default function Sidebar() {
   ]
 
   const productNavItems = [
-    { path: '/add-product', label: 'Add Product', icon: <Plus size={20} /> },
     { path: '/products', label: 'View Products', icon: <Package size={20} /> },
+    // { path: '/add-product', label: 'Add Product', icon: <Plus size={20} /> },
     { path: '/categories', label: 'Categories', icon: <Tag size={20} /> },
+    { path: '/images', label: 'Images', icon: <ShoppingBag size={20} /> }, {/* New Images Section */}
   ]
 
   const salesNavItems = [

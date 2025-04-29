@@ -1,65 +1,48 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
+const multer = require('multer');
+const db = require('../db/db'); // Import the database connection
 const router = express.Router();
 
-module.exports = (db, SECRET) => {
-  // Add Product route
-  router.post('/products', (req, res) => {
-    const {
-      product_name,
-      brand,
-      category,
-      subcategory,
-      description,
-      price,
-      discount_price,
-      stock_quantity,
-      sku,
-      media_files,
-      size_options,
-      color_options,
-      material,
-      weight,
-      shipping_charges,
-      delivery_time,
-      status,
-      show_on_homepage,
-      trending,
-      tags,
-      meta_title,
-      meta_description,
-      slug
-    } = req.body;
+// Set up multer for file uploads
+const upload = multer({
+  dest: 'uploads/', // temporary location to store uploaded files
+  limits: { fileSize: 10 * 1024 * 1024 }, // limit file size to 10MB
+});
 
-    // Insert query with 22 fields and 22 placeholders
-    const query = `
-    INSERT INTO products (
-      product_name, brand, category, subcategory, description, price, 
-      discount_price, stock_quantity, sku, media_files, size_options, 
-      color_options, material, weight, shipping_charges, delivery_time, 
-      status, show_on_homepage, trending, tags, meta_title, meta_description, slug
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+// Handle product creation request
+router.post('/', upload.single('media'), (req, res) => {
+  const {
+    title,
+    description,
+    status,
+    type,
+    vendor,
+    collections,
+    tags,
+    category, // ✅ Added category here
+  } = req.body;
+
+  // Handle file upload (if a file is provided)
+  const media = req.file ? req.file.path : null; // Store file path if uploaded
+
+  // Create SQL query (added `category`)
+  const sql = `
+    INSERT INTO products (title, description, media, status, type, vendor, collections, tags, category)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
-  
 
-    const values = [
-      product_name, brand, category, subcategory, description, price,
-      discount_price, stock_quantity, sku, media_files, size_options,
-      color_options, material, weight, shipping_charges, delivery_time,
-      status, show_on_homepage, trending, tags, meta_title, meta_description, slug
-    ];
-
-    // Execute the insert query
-    db.execute(query, values, (err, results) => {
+  // Execute the SQL query
+  db.query(
+    sql,
+    [title, description, media, status, type, vendor, collections, JSON.stringify(tags), category],
+    (err, result) => {
       if (err) {
-        console.error('Error inserting data:', err);
-        return res.status(500).send({ error: 'Error inserting data', details: err });
+        console.error('Error inserting product:', err);
+        return res.status(500).json({ message: 'Error inserting product' });
       }
-      res.status(200).send({ message: 'Product added successfully', productId: results.insertId });
-    });
-  });
+      res.status(200).json({ message: 'Product added successfully', productId: result.insertId });
+    }
+  );
+});
 
-  return router;
-};
+module.exports = router;
