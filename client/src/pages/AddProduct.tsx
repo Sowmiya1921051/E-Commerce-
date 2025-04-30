@@ -15,10 +15,14 @@ export default function AddProduct() {
     type: '',
     vendor: '',
     collections: '',
-    category: '', // Added category here
+    category: '', 
+    inventory: '',
     tags: [],
     currentTag: '',
   })
+
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -66,6 +70,7 @@ export default function AddProduct() {
     data.append('vendor', formData.vendor)
     data.append('collections', formData.collections)
     data.append('category', formData.category)
+    data.append('inventory', formData.inventory);
     data.append('tags', JSON.stringify(formData.tags))
 
     axios.post('http://localhost:5000/api/products', data, {
@@ -175,6 +180,18 @@ export default function AddProduct() {
             <option value="inactive">Inactive</option>
           </select>
         </div>
+
+        <div className="mb-4">
+        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Product Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
 
         <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
 

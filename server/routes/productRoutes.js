@@ -9,7 +9,7 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // limit file size to 10MB
 });
 
-// Handle product creation request
+// POST: Create a new product
 router.post('/', upload.single('media'), (req, res) => {
   const {
     title,
@@ -19,19 +19,16 @@ router.post('/', upload.single('media'), (req, res) => {
     vendor,
     collections,
     tags,
-    category, // ✅ Added category here
+    category,
   } = req.body;
 
-  // Handle file upload (if a file is provided)
-  const media = req.file ? req.file.path : null; // Store file path if uploaded
+  const media = req.file ? req.file.path : null;
 
-  // Create SQL query (added `category`)
   const sql = `
     INSERT INTO products (title, description, media, status, type, vendor, collections, tags, category)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  // Execute the SQL query
   db.query(
     sql,
     [title, description, media, status, type, vendor, collections, JSON.stringify(tags), category],
@@ -43,6 +40,25 @@ router.post('/', upload.single('media'), (req, res) => {
       res.status(200).json({ message: 'Product added successfully', productId: result.insertId });
     }
   );
+});
+
+// ✅ GET: Fetch all products
+router.get('/', (req, res) => {
+  const sql = 'SELECT * FROM products ORDER BY id DESC';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching products:', err);
+      return res.status(500).json({ message: 'Error fetching products' });
+    }
+    // Convert stringified tags back to JSON
+    const parsedResults = results.map(product => ({
+      ...product,
+      tags: JSON.parse(product.tags || '[]'),
+    }));
+
+    res.status(200).json(parsedResults);
+  });
 });
 
 module.exports = router;
