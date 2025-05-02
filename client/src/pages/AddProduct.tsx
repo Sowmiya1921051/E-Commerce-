@@ -15,14 +15,13 @@ export default function AddProduct() {
     type: '',
     vendor: '',
     collections: '',
-    category: '', 
+    category: '',
     inventory: '',
+    price: '',
+    compareAtPrice: '',
     tags: [],
     currentTag: '',
   })
-
-
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -70,8 +69,10 @@ export default function AddProduct() {
     data.append('vendor', formData.vendor)
     data.append('collections', formData.collections)
     data.append('category', formData.category)
-    data.append('inventory', formData.inventory);
+    data.append('inventory', formData.inventory)
     data.append('tags', JSON.stringify(formData.tags))
+    data.append('price', formData.price)
+    data.append('compareAtPrice', formData.compareAtPrice)
 
     axios.post('http://localhost:5000/api/products', data, {
       headers: {
@@ -81,7 +82,6 @@ export default function AddProduct() {
       .then((response) => {
         console.log('Product added successfully:', response.data)
 
-        // Reset form after success
         setFormData({
           title: '',
           description: '',
@@ -92,8 +92,11 @@ export default function AddProduct() {
           vendor: '',
           collections: '',
           category: '',
+          inventory: '',
           tags: [],
           currentTag: '',
+          price: '',
+          compareAtPrice: '',
         })
       })
       .catch((error) => {
@@ -167,6 +170,20 @@ export default function AddProduct() {
           />
         </div>
 
+        {/* Inventory Section */}
+        <div className="mb-4">
+          <label htmlFor="inventory" className="block text-sm font-semibold text-gray-700 text-[12px]">Inventory</label>
+          <input
+            type="text"
+            id="inventory"
+            name="inventory"
+            value={formData.inventory}
+            onChange={handleInputChange}
+            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+            placeholder="Enter inventory quantity or details"
+          />
+        </div>
+
         <div className="mb-4">
           <label htmlFor="status" className="block text-sm font-semibold text-gray-700 text-[12px]">Status</label>
           <select
@@ -181,17 +198,43 @@ export default function AddProduct() {
           </select>
         </div>
 
+        {/* Pricing Section */}
         <div className="mb-4">
-        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Product Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
+          <label className="block text-sm font-semibold text-gray-700 text-[12px] mb-2">Pricing</label>
+
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <label htmlFor="price" className="block text-sm text-gray-700 text-[12px]">Price</label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+
+            <div className="w-1/2">
+              <label htmlFor="compareAtPrice" className="block text-sm text-gray-700 text-[12px]">Compare-at Price</label>
+              <input
+                type="number"
+                id="compareAtPrice"
+                name="compareAtPrice"
+                value={formData.compareAtPrice}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+          </div>
+        </div>
+
 
         <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
 
@@ -234,7 +277,6 @@ export default function AddProduct() {
           />
         </div>
 
-        {/* Category Field */}
         <div className="mb-4">
           <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">Category</label>
           <input
@@ -248,7 +290,6 @@ export default function AddProduct() {
           />
         </div>
 
-        {/* Tags Section */}
         <div className="mb-4">
           <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 text-[12px]">Tags</label>
           <div className="flex flex-wrap gap-2">
@@ -268,10 +309,15 @@ export default function AddProduct() {
                   key={index}
                   className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center text-[12px]"
                 >
-                  {tag} <X size={14} className="ml-2 cursor-pointer" onClick={() => {
-                    const updatedTags = formData.tags.filter((_, i) => i !== index)
-                    setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
-                  }} />
+                  {tag}
+                  <X
+                    size={14}
+                    className="ml-2 cursor-pointer"
+                    onClick={() => {
+                      const updatedTags = formData.tags.filter((_, i) => i !== index)
+                      setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
+                    }}
+                  />
                 </span>
               ))}
             </div>

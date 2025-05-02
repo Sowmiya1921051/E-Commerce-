@@ -14,6 +14,23 @@ export default function ViewProducts() {
   const [sortBy, setSortBy] = useState('name') // 'name', 'price', 'stock'
   const [sortDirection, setSortDirection] = useState('asc') // 'asc', 'desc'
 
+  const deleteProduct = () => {
+    if (productToDelete) {
+      // Send a DELETE request to the backend
+      axios.delete(`http://localhost:5000/api/products/${productToDelete}`)
+        .then((res) => {
+          // Update the state after successful deletion
+          setProducts(products.filter((product) => product.id !== productToDelete));
+          setDeleteModalOpen(false);
+          setProductToDelete(null);  // Clear the product id after deletion
+          console.log('Product deleted successfully');
+        })
+        .catch((err) => {
+          console.error('Error deleting product:', err);
+        });
+    }
+  }
+
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/products')
@@ -28,6 +45,8 @@ export default function ViewProducts() {
         console.error('Error fetching products:', err)
       })
   }, [])
+
+
 
 
   // Sort products
@@ -80,13 +99,7 @@ export default function ViewProducts() {
     setDeleteModalOpen(true)
   }
 
-  const deleteProduct = () => {
-    if (productToDelete) {
-      setProducts(products.filter(product => product.id !== productToDelete))
-      setDeleteModalOpen(false)
-      setProductToDelete(null)
-    }
-  }
+
 
   return (
     <div>
@@ -154,12 +167,13 @@ export default function ViewProducts() {
                     <span className="ml-1">{renderSortIcon('price')}</span>
                   </div>
                 </th>
+
                 <th
                   className="cursor-pointer hover:bg-gray-100"
                   onClick={() => toggleSort('stock')}
                 >
                   <div className="flex items-center">
-                    Stock
+                    Inventory
                     <span className="ml-1">{renderSortIcon('stock')}</span>
                   </div>
                 </th>
@@ -197,10 +211,11 @@ export default function ViewProducts() {
                     </td>
                     <td className="font-medium">${product.price}</td>
                     <td>
-                      <span className={`badge ${product.stock > 10 ? 'badge-success' : 'badge-warning'}`}>
-                        {product.stock} in stock
+                      <span className={`badge ${parseInt(product.inventory) > 10 ? 'badge-success' : 'badge-warning'}`}>
+                        {product.inventory} in stock
                       </span>
                     </td>
+
                     <td>
                       <div className="flex items-center space-x-3">
                         <Link to={`/edit-product/${product.id}`} className="text-blue-600 hover:text-blue-800">
