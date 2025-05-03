@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, X, Upload, Save, ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import axios from 'axios'
+import CreatableSelect from 'react-select/creatable';
 
 export default function AddProduct() {
+  const [collectionsData, setCollectionsData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const collectionOptions = collectionsData.map(item => ({ value: item, label: item }));
+  const categoryOptions = categoryData.map(item => ({ value: item, label: item }));
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -105,6 +110,29 @@ export default function AddProduct() {
   }
 
 
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/products");
+        const products = await response.json();
+
+        // Use correct keys
+        const collections = [...new Set(products.map(p => p.collections))];
+        const categories = [...new Set(products.map(p => p.category))];
+
+        setCollectionsData(collections);
+        setCategoryData(categories);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
+    };
+
+    fetchProductData();
+  }, []);
+
+
+
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -123,9 +151,10 @@ export default function AddProduct() {
         </button>
       </div>
 
+      {/* Updated parent container classes */}
       <div className="flex gap-6 p-6">
-        {/* Left side form container */}
-        <div className="flex-1 bg-white p-6 shadow-lg rounded-md">
+        {/* Left side form container - Added flex-shrink-0 */}
+        <div className="flex-1 bg-white p-6 shadow-lg rounded-md flex-shrink-0">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="title" className="block text-sm font-semibold text-gray-700 text-[12px]">Title</label>
@@ -239,109 +268,104 @@ export default function AddProduct() {
             </div>
 
 
-            <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
 
-            <div className="mb-4">
-              <label htmlFor="type" className="block text-sm font-semibold text-gray-700 text-[12px]">Type</label>
-              <input
-                type="text"
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="Enter product type"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="vendor" className="block text-sm font-semibold text-gray-700 text-[12px]">Vendor</label>
-              <input
-                type="text"
-                id="vendor"
-                name="vendor"
-                value={formData.vendor}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="Enter vendor name"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="collections" className="block text-sm font-semibold text-gray-700 text-[12px]">Collections</label>
-              <input
-                type="text"
-                id="collections"
-                name="collections"
-                value={formData.collections}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="Enter collections"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">Category</label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="Enter category"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 text-[12px]">Tags</label>
-              <div className="flex flex-wrap gap-2">
-                <input
-                  type="text"
-                  id="tags"
-                  name="currentTag"
-                  value={formData.currentTag}
-                  onChange={handleInputChange}
-                  onKeyDown={handleTagAdd}
-                  className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                  placeholder="Press Enter to add tags"
-                />
-                <div className="flex gap-2 flex-wrap">
-                  {formData.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center text-[12px]"
-                    >
-                      {tag}
-                      <X
-                        size={14}
-                        className="ml-2 cursor-pointer"
-                        onClick={() => {
-                          const updatedTags = formData.tags.filter((_, i) => i !== index)
-                          setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
-                        }}
-                      />
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
           </form>
         </div>
 
-        {/* Right side small container */}
-        <div className="w-1/3 bg-gray-50 p-6 shadow-lg rounded-md">
-          <h2 className="text-xl font-semibold mb-4">Additional Info</h2>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700">Product Image</label>
-              <input type="file" id="image" name="image" className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
-            </div>
-            <div>
-              <label htmlFor="tags" className="block text-sm font-medium text-gray-700">Tags</label>
-              <input type="text" id="tags" name="tags" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+        {/* Right side small container - Added flex-shrink-0 */}
+        <div className="w-1/3 bg-white p-6 shadow-lg rounded-md flex-shrink-0">
+          <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
+
+          <div className="mb-4">
+            <label htmlFor="type" className="block text-sm font-semibold text-gray-700 text-[12px]">Type</label>
+            <input
+              type="text"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+              placeholder="Enter product type"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="vendor" className="block text-sm font-semibold text-gray-700 text-[12px]">Vendor</label>
+            <input
+              type="text"
+              id="vendor"
+              name="vendor"
+              value={formData.vendor}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+              placeholder="Enter vendor name"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="collections" className="block text-sm font-semibold text-gray-700 text-[12px]">
+              Collections
+            </label>
+            <CreatableSelect
+              isClearable
+              options={collectionOptions}
+              onChange={(selectedOption) => {
+                setFormData(prev => ({ ...prev, collections: selectedOption ? selectedOption.value : '' }));
+              }}
+              value={formData.collections ? { value: formData.collections, label: formData.collections } : null}
+              placeholder="Select or create collection"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">
+              Category
+            </label>
+            <CreatableSelect
+              isClearable
+              options={categoryOptions}
+              onChange={(selectedOption) => {
+                setFormData(prev => ({ ...prev, category: selectedOption ? selectedOption.value : '' }));
+              }}
+              value={formData.category ? { value: formData.category, label: formData.category } : null}
+              placeholder="Select or create category"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 text-[12px]">Tags</label>
+            <div className="flex flex-col gap-2">
+              <input
+                type="text"
+                id="tags"
+                name="currentTag"
+                value={formData.currentTag}
+                onChange={handleInputChange}
+                onKeyDown={handleTagAdd}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Press Enter to add tags"
+              />
+
+              <div className="grid grid-cols-2 gap-2">
+                {formData.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center justify-between text-[12px]"
+                  >
+                    {tag}
+                    <X
+                      size={14}
+                      className="ml-2 cursor-pointer"
+                      onClick={() => {
+                        const updatedTags = formData.tags.filter((_, i) => i !== index)
+                        setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
+                      }}
+                    />
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
