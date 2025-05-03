@@ -61,7 +61,7 @@ export default function Sidebar() {
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`flex items-center gap-2 p-2 rounded-md text-sm font-medium ${
+                  className={`flex items-center gap-2 p-2 rounded-md text-sm font-normal ${
                     pathname === item.path
                       ? 'bg-blue-100 text-blue-600'
                       : 'text-gray-700 hover:bg-gray-100'
@@ -79,7 +79,7 @@ export default function Sidebar() {
                 onClick={() => toggleCollapse('products')}
                 className="w-full flex items-center justify-between p-2 text-gray-700 font-semibold hover:bg-gray-100 rounded-md"
               >
-                <span>Products</span>
+                <span className='text-sm'>Products</span>
                 <ChevronDown
                   size={16}
                   className={`transition-transform ${!collapsed.products ? 'rotate-180' : ''}`}
@@ -91,7 +91,7 @@ export default function Sidebar() {
                     <li key={item.path}>
                       <Link
                         to={item.path}
-                        className={`flex items-center gap-2 p-2 rounded-md text-sm ${
+                        className={`flex items-center gap-2 p-2 rounded-md text-xs ${
                           pathname === item.path
                             ? 'bg-blue-100 text-blue-600'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -112,7 +112,7 @@ export default function Sidebar() {
                 onClick={() => toggleCollapse('sales')}
                 className="w-full flex items-center justify-between p-2 text-gray-700 font-semibold hover:bg-gray-100 rounded-md"
               >
-                <span>Sales</span>
+                <span className='text-sm'>Sales</span>
                 <ChevronDown
                   size={16}
                   className={`transition-transform ${!collapsed.sales ? 'rotate-180' : ''}`}
@@ -145,7 +145,7 @@ export default function Sidebar() {
                 onClick={() => toggleCollapse('settings')}
                 className="w-full flex items-center justify-between p-2 text-gray-700 font-semibold hover:bg-gray-100 rounded-md"
               >
-                <span>Settings</span>
+                <span className='text-sm'>Settings</span>
                 <ChevronDown
                   size={16}
                   className={`transition-transform ${!collapsed.settings ? 'rotate-180' : ''}`}

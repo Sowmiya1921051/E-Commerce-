@@ -32,6 +32,8 @@ export default function ViewProducts() {
   }
 
 
+
+
   useEffect(() => {
     axios.get('http://localhost:5000/api/products')
       .then(res => {
@@ -194,10 +196,12 @@ export default function ViewProducts() {
                       <div className="flex items-center">
                         <div className="h-10 w-10 flex-shrink-0 mr-3">
                           <img
-                            src={product.media}
+                            src={`http://localhost:5000/${product.media}`} // or /uploads/${product.media} if needed
                             alt={product.name}
                             className="h-10 w-10 rounded object-cover"
                           />
+
+
                         </div>
                         <div>
                           <div className="font-medium text-gray-800">{product.title}</div>

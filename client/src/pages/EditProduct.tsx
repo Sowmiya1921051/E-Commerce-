@@ -1,0 +1,299 @@
+import { useState, useEffect } from 'react'
+import { Plus, X, Upload, Save, ArrowLeft } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import axios from 'axios'
+
+export default function EditProduct() {
+    const { id } = useParams()  // Assuming you are passing the product ID in the URL
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        media: null,
+        status: 'active',
+        productDescription: '',
+        type: '',
+        vendor: '',
+        collections: '',
+        category: '',
+        inventory: '',
+        price: '',
+        compareAtPrice: '',
+        tags: [],
+        currentTag: '',
+    })
+
+    useEffect(() => {
+        // Fetch the product data by ID
+        axios.get(`http://localhost:5000/api/products/${id}`)
+            .then(response => {
+                const product = response.data
+                setFormData({
+                    title: product.title,
+                    description: product.description,
+                    media: product.media,
+                    status: product.status,
+                    productDescription: product.productDescription,
+                    type: product.type,
+                    vendor: product.vendor,
+                    collections: product.collections,
+                    category: product.category,
+                    inventory: product.inventory,
+                    price: product.price,
+                    compareAtPrice: product.compareAtPrice,
+                    tags: product.tags,
+                    currentTag: '',
+                })
+            })
+            .catch(error => console.error('Error fetching product data:', error))
+    }, [id])
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
+
+    const handleFileChange = (e) => {
+        const { name, files } = e.target
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: files[0],
+        }))
+    }
+
+    const handleTagAdd = (e) => {
+        if (e.key === 'Enter' && formData.currentTag.trim() !== '') {
+            e.preventDefault()
+            setFormData((prevData) => ({
+                ...prevData,
+                tags: [...prevData.tags, formData.currentTag.trim()],
+                currentTag: '',
+            }))
+        }
+    }
+
+    const handleDescriptionChange = (value) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            description: value,
+        }))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const data = new FormData()
+        data.append('title', formData.title)
+        data.append('description', formData.description)
+        data.append('media', formData.media)
+        data.append('status', formData.status)
+        data.append('type', formData.type)
+        data.append('vendor', formData.vendor)
+        data.append('collections', formData.collections)
+        data.append('category', formData.category)
+        data.append('inventory', formData.inventory)
+        data.append('tags', JSON.stringify(formData.tags))
+        data.append('price', formData.price)
+        data.append('compareAtPrice', formData.compareAtPrice)
+
+        axios.put(`http://localhost:5000/api/products/${id}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then((response) => {
+                console.log('Product updated successfully:', response.data)
+            })
+            .catch((error) => {
+                console.error('Error updating product:', error)
+            })
+    }
+
+    return (
+        <div>
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center">
+                    <Link to="/products" className="mr-3 text-gray-500 hover:text-gray-700">
+                        <ArrowLeft size={20} />
+                    </Link>
+                    <h1 className="text-2xl font-bold text-[14px]">Edit Product</h1>
+                </div>
+                <button
+                    onClick={handleSubmit}
+                    className="btn btn-primary flex items-center"
+                >
+                    <Save size={18} className="mr-2" />
+                    Save Changes
+                </button>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <label htmlFor="title" className="block text-sm font-semibold text-gray-700 text-[12px]">Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter product title"
+                        required
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="description" className="block text-sm font-semibold text-gray-700 text-[12px]">Description</label>
+                    <ReactQuill
+                        value={formData.description}
+                        onChange={handleDescriptionChange}
+                        className="w-full border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter detailed product description"
+                        theme="snow"
+                        modules={{
+                            toolbar: [
+                                [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['bold', 'italic', 'underline'],
+                                [{ 'align': [] }],
+                                ['link', 'image', 'video'],
+                                ['clean'],
+                            ],
+                        }}
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="media" className="block text-sm font-semibold text-gray-700 text-[12px]">Media</label>
+                    {formData.media ? (
+                        <img
+                            src={`http://localhost:5000/${formData.media}`}
+                            alt="Product Media"
+                            className="w-32 h-32 object-cover rounded"
+                        />
+                    ) : (
+                        <p>No image available</p>
+                    )}
+                    <input
+                        type="file"
+                        id="media"
+                        name="media"
+                        onChange={handleFileChange}
+                        className="w-full p-2 border border-gray-300 rounded-md mt-2"
+                    />
+                </div>
+
+                {/* Inventory Section */}
+                <div className="mb-4">
+                    <label htmlFor="inventory" className="block text-sm font-semibold text-gray-700 text-[12px]">Inventory</label>
+                    <input
+                        type="text"
+                        id="inventory"
+                        name="inventory"
+                        value={formData.inventory}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter inventory quantity or details"
+                    />
+                </div>
+
+                {/* Pricing Section */}
+                <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 text-[12px] mb-2">Pricing</label>
+
+                    <div className="flex gap-4">
+                        <div className="w-1/2">
+                            <label htmlFor="price" className="block text-sm text-gray-700 text-[12px]">Price</label>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                value={formData.price}
+                                onChange={handleInputChange}
+                                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                            />
+                        </div>
+
+                        <div className="w-1/2">
+                            <label htmlFor="compareAtPrice" className="block text-sm text-gray-700 text-[12px]">Compare-at Price</label>
+                            <input
+                                type="number"
+                                id="compareAtPrice"
+                                name="compareAtPrice"
+                                value={formData.compareAtPrice}
+                                onChange={handleInputChange}
+                                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Product Organization Section */}
+                <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
+
+                <div className="mb-4">
+                    <label htmlFor="type" className="block text-sm font-semibold text-gray-700 text-[12px]">Type</label>
+                    <input
+                        type="text"
+                        id="type"
+                        name="type"
+                        value={formData.type}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter product type"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="vendor" className="block text-sm font-semibold text-gray-700 text-[12px]">Vendor</label>
+                    <input
+                        type="text"
+                        id="vendor"
+                        name="vendor"
+                        value={formData.vendor}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter vendor name"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="collections" className="block text-sm font-semibold text-gray-700 text-[12px]">Collections</label>
+                    <input
+                        type="text"
+                        id="collections"
+                        name="collections"
+                        value={formData.collections}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter collections"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">Category</label>
+                    <input
+                        type="text"
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                        placeholder="Enter category"
+                    />
+                </div>
+
+            </form>
+        </div>
+    )
+}

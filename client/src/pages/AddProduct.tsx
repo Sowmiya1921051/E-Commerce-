@@ -123,207 +123,230 @@ export default function AddProduct() {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-semibold text-gray-700 text-[12px]">Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter product title"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-semibold text-gray-700 text-[12px]">Description</label>
-          <ReactQuill
-            value={formData.description}
-            onChange={handleDescriptionChange}
-            className="w-full border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter detailed product description"
-            theme="snow"
-            modules={{
-              toolbar: [
-                [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['bold', 'italic', 'underline'],
-                [{ 'align': [] }],
-                ['link', 'image', 'video'],
-                ['clean'],
-              ],
-            }}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="media" className="block text-sm font-semibold text-gray-700 text-[12px]">Media</label>
-          <input
-            type="file"
-            id="media"
-            name="media"
-            onChange={handleFileChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        {/* Inventory Section */}
-        <div className="mb-4">
-          <label htmlFor="inventory" className="block text-sm font-semibold text-gray-700 text-[12px]">Inventory</label>
-          <input
-            type="text"
-            id="inventory"
-            name="inventory"
-            value={formData.inventory}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter inventory quantity or details"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="status" className="block text-sm font-semibold text-gray-700 text-[12px]">Status</label>
-          <select
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-
-        {/* Pricing Section */}
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700 text-[12px] mb-2">Pricing</label>
-
-          <div className="flex gap-4">
-            <div className="w-1/2">
-              <label htmlFor="price" className="block text-sm text-gray-700 text-[12px]">Price</label>
+      <div className="flex gap-6 p-6">
+        {/* Left side form container */}
+        <div className="flex-1 bg-white p-6 shadow-lg rounded-md">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="title" className="block text-sm font-semibold text-gray-700 text-[12px]">Title</label>
               <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
                 onChange={handleInputChange}
                 className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
+                placeholder="Enter product title"
+                required
               />
             </div>
 
-            <div className="w-1/2">
-              <label htmlFor="compareAtPrice" className="block text-sm text-gray-700 text-[12px]">Compare-at Price</label>
-              <input
-                type="number"
-                id="compareAtPrice"
-                name="compareAtPrice"
-                value={formData.compareAtPrice}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 text-[12px]">Description</label>
+              <ReactQuill
+                value={formData.description}
+                onChange={handleDescriptionChange}
+                className="w-full border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter detailed product description"
+                theme="snow"
+                modules={{
+                  toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean'],
+                  ],
+                }}
               />
             </div>
-          </div>
-        </div>
 
+            <div className="mb-4">
+              <label htmlFor="media" className="block text-sm font-semibold text-gray-700 text-[12px]">Media</label>
+              <input
+                type="file"
+                id="media"
+                name="media"
+                onChange={handleFileChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
 
-        <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
+            {/* Inventory Section */}
+            <div className="mb-4">
+              <label htmlFor="inventory" className="block text-sm font-semibold text-gray-700 text-[12px]">Inventory</label>
+              <input
+                type="text"
+                id="inventory"
+                name="inventory"
+                value={formData.inventory}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter inventory quantity or details"
+              />
+            </div>
 
-        <div className="mb-4">
-          <label htmlFor="type" className="block text-sm font-semibold text-gray-700 text-[12px]">Type</label>
-          <input
-            type="text"
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter product type"
-          />
-        </div>
+            <div className="mb-4">
+              <label htmlFor="status" className="block text-sm font-semibold text-gray-700 text-[12px]">Status</label>
+              <select
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
 
-        <div className="mb-4">
-          <label htmlFor="vendor" className="block text-sm font-semibold text-gray-700 text-[12px]">Vendor</label>
-          <input
-            type="text"
-            id="vendor"
-            name="vendor"
-            value={formData.vendor}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter vendor name"
-          />
-        </div>
+            {/* Pricing Section */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 text-[12px] mb-2">Pricing</label>
 
-        <div className="mb-4">
-          <label htmlFor="collections" className="block text-sm font-semibold text-gray-700 text-[12px]">Collections</label>
-          <input
-            type="text"
-            id="collections"
-            name="collections"
-            value={formData.collections}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter collections"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">Category</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-            placeholder="Enter category"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 text-[12px]">Tags</label>
-          <div className="flex flex-wrap gap-2">
-            <input
-              type="text"
-              id="tags"
-              name="currentTag"
-              value={formData.currentTag}
-              onChange={handleInputChange}
-              onKeyDown={handleTagAdd}
-              className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
-              placeholder="Press Enter to add tags"
-            />
-            <div className="flex gap-2 flex-wrap">
-              {formData.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center text-[12px]"
-                >
-                  {tag}
-                  <X
-                    size={14}
-                    className="ml-2 cursor-pointer"
-                    onClick={() => {
-                      const updatedTags = formData.tags.filter((_, i) => i !== index)
-                      setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
-                    }}
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  <label htmlFor="price" className="block text-sm text-gray-700 text-[12px]">Price</label>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
                   />
-                </span>
-              ))}
+                </div>
+
+                <div className="w-1/2">
+                  <label htmlFor="compareAtPrice" className="block text-sm text-gray-700 text-[12px]">Compare-at Price</label>
+                  <input
+                    type="number"
+                    id="compareAtPrice"
+                    name="compareAtPrice"
+                    value={formData.compareAtPrice}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <label className="block text-sm font-semibold text-gray-700 text-[12px]">Product Organization</label>
+
+            <div className="mb-4">
+              <label htmlFor="type" className="block text-sm font-semibold text-gray-700 text-[12px]">Type</label>
+              <input
+                type="text"
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter product type"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="vendor" className="block text-sm font-semibold text-gray-700 text-[12px]">Vendor</label>
+              <input
+                type="text"
+                id="vendor"
+                name="vendor"
+                value={formData.vendor}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter vendor name"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="collections" className="block text-sm font-semibold text-gray-700 text-[12px]">Collections</label>
+              <input
+                type="text"
+                id="collections"
+                name="collections"
+                value={formData.collections}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter collections"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="category" className="block text-sm font-semibold text-gray-700 text-[12px]">Category</label>
+              <input
+                type="text"
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                placeholder="Enter category"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 text-[12px]">Tags</label>
+              <div className="flex flex-wrap gap-2">
+                <input
+                  type="text"
+                  id="tags"
+                  name="currentTag"
+                  value={formData.currentTag}
+                  onChange={handleInputChange}
+                  onKeyDown={handleTagAdd}
+                  className="w-full p-2 border border-gray-300 rounded-md text-[14px]"
+                  placeholder="Press Enter to add tags"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  {formData.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center text-[12px]"
+                    >
+                      {tag}
+                      <X
+                        size={14}
+                        className="ml-2 cursor-pointer"
+                        onClick={() => {
+                          const updatedTags = formData.tags.filter((_, i) => i !== index)
+                          setFormData((prevData) => ({ ...prevData, tags: updatedTags }))
+                        }}
+                      />
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Right side small container */}
+        <div className="w-1/3 bg-gray-50 p-6 shadow-lg rounded-md">
+          <h2 className="text-xl font-semibold mb-4">Additional Info</h2>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium text-gray-700">Product Image</label>
+              <input type="file" id="image" name="image" className="mt-1 block w-full border border-gray-300 rounded-md p-2" />
+            </div>
+            <div>
+              <label htmlFor="tags" className="block text-sm font-medium text-gray-700">Tags</label>
+              <input type="text" id="tags" name="tags" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
             </div>
           </div>
         </div>
-      </form>
+      </div>
+
+
+
     </div>
   )
 }

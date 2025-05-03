@@ -6,6 +6,7 @@ import ViewProducts from './pages/ViewProducts'
 import Categories from './pages/Categories'
 import Images from './pages/Images' 
 import ProductList from './pages/ProductList'
+import EditProduct from './pages/EditProduct'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="add-product" element={<AddProduct />} />
+        <Route path="edit-product/:id" element={<EditProduct />} />
         <Route path="products" element={<ViewProducts />} />
         <Route path="categories" element={<Categories />} />
         <Route path="*" element={<Navigate to="/" replace />} />
