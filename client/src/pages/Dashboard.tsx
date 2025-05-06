@@ -1,172 +1,209 @@
-import  { CreditCard, Users, ShoppingBag, Activity, ArrowUp, ArrowDown, Zap, Package, BarChart } from 'lucide-react'
-import { Line } from './mockCharts'
+import { CreditCard, Users, ShoppingBag, Activity, ArrowUp, ArrowDown, Zap, Package, BarChart } from 'lucide-react'
+// import { Line } from './mockCharts'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'Mon', sales: 400 },
+  { name: 'Tue', sales: 300 },
+  { name: 'Wed', sales: 500 },
+  { name: 'Thu', sales: 200 },
+  { name: 'Fri', sales: 700 },
+  { name: 'Sat', sales: 600 },
+  { name: 'Sun', sales: 300 },
+];
+
 
 export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Stats cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card flex items-center">
-          <div className="rounded-full bg-blue-100 p-3 mr-4">
-            <CreditCard className="h-6 w-6 text-blue-600" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+        <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
+          <div className="rounded-full bg-blue-100 p-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h10m-2 5h-6m4-11v6m-2-6v6m-2-6v6m-2-6v6" />
+            </svg>
           </div>
           <div>
             <p className="text-sm text-gray-600">Total Revenue</p>
             <div className="flex items-center mt-1">
-              <h3 className="text-xl font-bold text-gray-800">$24,780</h3>
-              <span className="flex items-center text-green-600 text-xs ml-2">
-                <ArrowUp size={12} />
+              <h3 className="text-2xl font-bold text-gray-800">$24,780</h3>
+              <span className="flex items-center text-green-600 text-sm ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
                 12%
               </span>
             </div>
           </div>
         </div>
-        
-        <div className="card flex items-center">
-          <div className="rounded-full bg-green-100 p-3 mr-4">
-            <Users className="h-6 w-6 text-green-600" />
+
+        <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
+          <div className="rounded-full bg-green-100 p-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h-5m-5 0h10m-10 0l-1-4m11 4l-1-4m0 0a5 5 0 01-10 0m10 0a5 5 0 00-10 0m9-2.002a8.96 8.96 0 01-10 0M12 10a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
           </div>
           <div>
             <p className="text-sm text-gray-600">Total Customers</p>
             <div className="flex items-center mt-1">
-              <h3 className="text-xl font-bold text-gray-800">1,245</h3>
-              <span className="flex items-center text-green-600 text-xs ml-2">
-                <ArrowUp size={12} />
+              <h3 className="text-2xl font-bold text-gray-800">1,245</h3>
+              <span className="flex items-center text-green-600 text-sm ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
                 8%
               </span>
             </div>
           </div>
         </div>
-        
-        <div className="card flex items-center">
-          <div className="rounded-full bg-purple-100 p-3 mr-4">
-            <ShoppingBag className="h-6 w-6 text-purple-600" />
+
+
+        <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
+          <div className="rounded-full bg-purple-100 p-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
           </div>
           <div>
             <p className="text-sm text-gray-600">Total Products</p>
             <div className="flex items-center mt-1">
-              <h3 className="text-xl font-bold text-gray-800">368</h3>
-              <span className="flex items-center text-green-600 text-xs ml-2">
-                <ArrowUp size={12} />
+              <h3 className="text-2xl font-bold text-gray-800">368</h3>
+              <span className="flex items-center text-green-600 text-sm ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
                 5%
               </span>
             </div>
           </div>
         </div>
-        
-        <div className="card flex items-center">
-          <div className="rounded-full bg-orange-100 p-3 mr-4">
-            <Activity className="h-6 w-6 text-orange-600" />
+
+
+        <div className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
+          <div className="rounded-full bg-orange-100 p-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8m3-2v6m-2-6v6m-2-6v6" />
+            </svg>
           </div>
           <div>
             <p className="text-sm text-gray-600">Total Orders</p>
             <div className="flex items-center mt-1">
-              <h3 className="text-xl font-bold text-gray-800">456</h3>
-              <span className="flex items-center text-red-600 text-xs ml-2">
-                <ArrowDown size={12} />
+              <h3 className="text-2xl font-bold text-gray-800">456</h3>
+              <span className="flex items-center text-red-600 text-sm ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
                 3%
               </span>
             </div>
           </div>
         </div>
+
       </div>
       
+
+      
+
+
       {/* Chart and table section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="card">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-800">Sales Overview</h3>
-              <div className="flex space-x-2">
-                <button className="btn-outline text-xs">Monthly</button>
-                <button className="btn-primary text-xs">Weekly</button>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
+        {/* Sales Overview Chart */}
+        <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-semibold text-gray-800">Sales Overview</h3>
+            <div className="flex space-x-3">
+              <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500">Monthly</button>
+              <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Weekly</button>
             </div>
-            <div className="h-72">
-              <Line />
+          </div>
+          <div className="h-80">
+            {/* Placeholder for your chart component */}
+            {/* Replace the div below with your actual chart component */}
+            <div className="flex items-center justify-center h-full text-gray-500">
+              [Your Chart Component Here - e.g., &lt;LineChart /&gt;]
             </div>
           </div>
         </div>
-        
-        <div>
-          <div className="card">
-            <h3 className="text-lg font-medium text-gray-800 mb-4">Popular Products</h3>
-            <div className="space-y-4">
-              {/* Product 1 */}
-              <div className="flex items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwxfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
-                  alt="Product"
-                  className="w-10 h-10 rounded object-cover"
-                />
-                <div className="ml-3 flex-1">
-                  <h4 className="text-sm font-medium text-gray-800">Smart Watch</h4>
-                  <p className="text-xs text-gray-500">Electronics</p>
-                </div>
-                <span className="text-sm font-medium text-gray-800">$299</span>
+
+        {/* <!-- Popular Products List --> */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-xl font-semibold text-gray-800 mb-6">Popular Products</h3>
+          <div className="space-y-6">
+            {/* Product 1 */}
+            <div className="flex items-center">
+              <img
+                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwxfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
+                alt="Smart Watch"
+                className="w-14 h-14 rounded-lg object-cover shadow-sm"
+              />
+              <div className="ml-4 flex-1">
+                <h4 className="text-base font-medium text-gray-900">Smart Watch</h4>
+                <p className="text-sm text-gray-600">Electronics</p>
               </div>
-              
-              {/* Product 2 */}
-              <div className="flex items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwyfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
-                  alt="Product"
-                  className="w-10 h-10 rounded object-cover"
-                />
-                <div className="ml-3 flex-1">
-                  <h4 className="text-sm font-medium text-gray-800">Skin Care Set</h4>
-                  <p className="text-xs text-gray-500">Beauty</p>
-                </div>
-                <span className="text-sm font-medium text-gray-800">$89</span>
-              </div>
-              
-              {/* Product 3 */}
-              <div className="flex items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1556228578-567ba127e37f?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwzfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
-                  alt="Product"
-                  className="w-10 h-10 rounded object-cover"
-                />
-                <div className="ml-3 flex-1">
-                  <h4 className="text-sm font-medium text-gray-800">Natural Serum</h4>
-                  <p className="text-xs text-gray-500">Beauty</p>
-                </div>
-                <span className="text-sm font-medium text-gray-800">$59</span>
-              </div>
-              
-              {/* Product 4 */}
-              <div className="flex items-center">
-                <img
-                  src="https://images.unsplash.com/photo-1556228578-f9707385e031?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHw0fHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
-                  alt="Product"
-                  className="w-10 h-10 rounded object-cover"
-                />
-                <div className="ml-3 flex-1">
-                  <h4 className="text-sm font-medium text-gray-800">Purple Tube</h4>
-                  <p className="text-xs text-gray-500">Beauty</p>
-                </div>
-                <span className="text-sm font-medium text-gray-800">$34</span>
-              </div>
+              <span className="text-base font-semibold text-gray-900">$299</span>
             </div>
-            <div className="mt-4 pt-3 border-t border-gray-100">
-              <a href="/products" className="text-sm text-blue-600 hover:underline flex items-center justify-center">
-                View all products
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
+
+            {/* Product 2 */}
+            <div className="flex items-center">
+              <img
+                src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwyfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
+                alt="Skin Care Set"
+                className="w-14 h-14 rounded-lg object-cover shadow-sm"
+              />
+              <div className="ml-4 flex-1">
+                <h4 className="text-base font-medium text-gray-900">Skin Care Set</h4>
+                <p className="text-sm text-gray-600">Beauty</p>
+              </div>
+              <span className="text-base font-semibold text-gray-900">$89</span>
             </div>
+
+            {/* Product 3 */}
+            <div className="flex items-center">
+              <img
+                src="https://images.unsplash.com/photo-1556228578-567ba127e37f?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHwzfHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
+                alt="Natural Serum"
+                className="w-14 h-14 rounded-lg object-cover shadow-sm"
+              />
+              <div className="ml-4 flex-1">
+                <h4 className="text-base font-medium text-gray-900">Natural Serum</h4>
+                <p className="text-sm text-gray-600">Beauty</p>
+              </div>
+              <span className="text-base font-semibold text-gray-900">$59</span>
+            </div>
+
+            {/* Product 4 */}
+            <div className="flex items-center">
+              <img
+                src="https://images.unsplash.com/photo-1556228578-f9707385e031?ixid=M3w3MjUzNDh8MHwxfHNlYXJjaHw0fHxlLWNvbW1lcmNlJTIwcHJvZHVjdCUyMGRhc2hib2FyZCUyMG1vZGVybiUyMFVJfGVufDB8fHx8MTc0NTY0ODUyOXww&ixlib=rb-4.0.3"
+                alt="Purple Tube"
+                className="w-14 h-14 rounded-lg object-cover shadow-sm"
+              />
+              <div className="ml-4 flex-1">
+                <h4 className="text-base font-medium text-gray-900">Purple Tube</h4>
+                <p className="text-sm text-gray-600">Beauty</p>
+              </div>
+              <span className="text-base font-semibold text-gray-900">$34</span>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+            <a href="/products" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
+              View all products
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
-      
+
       {/* Recent orders */}
       <div className="card">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-medium text-gray-800">Recent Orders</h3>
           <a href="/products" className="text-sm text-blue-600 hover:underline">View All</a>
         </div>
-        
+
         <div className="table-container">
           <table className="table">
             <thead>
@@ -300,4 +337,3 @@ export default function Dashboard() {
     </div>
   )
 }
- 
